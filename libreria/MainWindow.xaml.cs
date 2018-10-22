@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
+using System.Xml.Linq;
 
 namespace libreria
 {
@@ -20,9 +22,28 @@ namespace libreria
     /// </summary>
     public partial class MainWindow : Window
     {
+        XDocument doc = XDocument.Load(@"../../libri.XML");
         public MainWindow()
         {
             InitializeComponent();
+        }
+        
+        private void btn_libridi_Click(object sender, RoutedEventArgs e)
+        {
+            lst_lista.Items.Clear();
+            string cognome = txt_autore.Text;
+           // XDocument xmlDocument = XDocument.Load(@"C:\Users\alessandro.suprani\Desktop\libreria\libri-foschi-suprani\libreria\libri.XML");
+            XDocument xmlDoc = XDocument.Parse(File.ReadAllText(@"../../libri.XML", System.Text.Encoding.UTF8), LoadOptions.None);
+
+            IEnumerable<string> names = from libri in XDocument.Load(@"../../libri.XML")
+                                        .Elements("Biblioteca").Elements("wiride")
+                                        where (string)libri.Element("autore").Element("cognome") == cognome
+                                        select libri.Element("codice_scheda").Value;
+
+            foreach (string nomi in names)
+              lst_lista.Items.Add(nomi);
+
+             //xmlDoc.Save(@"C:\Users\alessandro.suprani\Desktop\libreria\libri-foschi-suprani\libreria\libri.XML");
         }
     }
 }
