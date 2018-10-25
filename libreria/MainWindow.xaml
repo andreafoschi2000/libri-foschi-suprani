@@ -11,11 +11,12 @@
             <ImageBrush ImageSource="sfondo.jpg"/>
         </Grid.Background>
         <Button x:Name="btn_libridi" Content="Cerca per autore" HorizontalAlignment="Left" Height="38" Margin="110,304,0,0" VerticalAlignment="Top" Width="126" Click="btn_libridi_Click"/>
-        <Button x:Name="btn_postbooks" Content="Libri post 2011" HorizontalAlignment="Left" Height="39" Margin="528,264,0,0" VerticalAlignment="Top" Width="126"/>
-        <Button x:Name="btn_keywords" Content="Ricerca per Keyword" HorizontalAlignment="Left" Height="38" Margin="324,304,0,0" VerticalAlignment="Top" Width="126"/>
+        <Button x:Name="btn_genere" Content="Libri post 2011" HorizontalAlignment="Left" Height="39" Margin="528,264,0,0" VerticalAlignment="Top" Width="126" Click="btn_genere_Click"/>
+        <Button x:Name="btn_copie" Content="Ricerca per titolo (Copie)" HorizontalAlignment="Left" Height="38" Margin="324,304,0,0" VerticalAlignment="Top" Width="139" Click="btn_copie_Click"/>
         <ListBox x:Name="lst_lista" HorizontalAlignment="Left" Height="249" Margin="210,10,0,0" VerticalAlignment="Top" Width="346"/>
         <TextBox x:Name="txt_autore" Height="31" Margin="110,273,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="126" HorizontalAlignment="Left"/>
-        <TextBox x:Name="txt_keyword" HorizontalAlignment="Left" Height="31" Margin="324,273,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="126"/>
+        <TextBox x:Name="txt_copie" HorizontalAlignment="Left" Height="31" Margin="324,273,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="139" />
+        <Button x:Name="btn_remove" Content="Rimuovi Tag Abstract" HorizontalAlignment="Left" Height="32" Margin="110,377,0,0" VerticalAlignment="Top" Width="126" Click="btn_remove_Click"/>
 
     </Grid>
 </Window>

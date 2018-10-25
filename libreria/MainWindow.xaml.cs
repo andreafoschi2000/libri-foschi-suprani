@@ -14,6 +14,8 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using System.Xml.Linq;
+using System.Xml;
+using System.Xml.XPath;
 
 namespace libreria
 {
@@ -32,18 +34,60 @@ namespace libreria
         {
             lst_lista.Items.Clear();
             string cognome = txt_autore.Text;
-           // XDocument xmlDocument = XDocument.Load(@"C:\Users\alessandro.suprani\Desktop\libreria\libri-foschi-suprani\libreria\libri.XML");
             XDocument xmlDoc = XDocument.Parse(File.ReadAllText(@"../../libri.XML", System.Text.Encoding.UTF8), LoadOptions.None);
 
             IEnumerable<string> names = from libri in XDocument.Load(@"../../libri.XML")
                                         .Elements("Biblioteca").Elements("wiride")
                                         where (string)libri.Element("autore").Element("cognome") == cognome
-                                        select libri.Element("codice_scheda").Value;
+                                        select libri.Element("titolo").Value;
 
             foreach (string nomi in names)
               lst_lista.Items.Add(nomi);
 
-             //xmlDoc.Save(@"C:\Users\alessandro.suprani\Desktop\libreria\libri-foschi-suprani\libreria\libri.XML");
+        }
+
+        private void txt_keyword_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void btn_copie_Click(object sender, RoutedEventArgs e)
+        {
+            lst_lista.Items.Clear();
+            int index = 0;
+            IEnumerable<string> copie = from libri in XDocument.Load(@"../../libri.XML")
+                                                    .Elements("Biblioteca").Elements("wiride")
+                                        where (string)libri.Element("titolo") == txt_copie.Text
+                                        select libri.Element("titolo").Value;
+            foreach (string nomi in copie)              
+                    index++;
+            lst_lista.Items.Add(index);
+
+        }
+
+        private void btn_genere_Click(object sender, RoutedEventArgs e)
+        {
+            lst_lista.Items.Clear();
+
+            IEnumerable<string> titles = from libri in XDocument.Load(@"../../libri.XML")
+                                        .Elements("Biblioteca").Elements("wiride")
+                                         where (string)libri.Element("genere") == "romanzo"
+                                         select libri.Element("titolo").Value;
+
+            int cont = 0;
+
+            foreach (string titolo in titles)
+                cont++;
+
+            lst_lista.Items.Add(cont.ToString());
+        }
+
+        private void btn_remove_Click(object sender, RoutedEventArgs e)
+        {
+            XElement elment = (from xml1 in doc.Descendants("abstract")
+                               select xml1).FirstOrDefault();
+            elment.Remove();
+            doc.Save(@"../../libri.XML");
         }
     }
 }
