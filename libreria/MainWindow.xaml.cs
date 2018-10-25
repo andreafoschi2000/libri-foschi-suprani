@@ -90,9 +90,8 @@ namespace libreria
         // RIMOZIONE TAG ABSTRACT | QUERY 4
         private void btn_remove_Click(object sender, RoutedEventArgs e)
         {
-
-            
-         
+            doc.Nodes().OfType<XElement>().Elements("wiride").Elements("abstract").Remove();
+            doc.Save(@"../../libri.XML");
         }
 
         private void btn_modifica_Click(object sender, RoutedEventArgs e)
