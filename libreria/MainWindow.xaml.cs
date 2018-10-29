@@ -35,11 +35,12 @@ namespace libreria
         {
             lst_lista.Items.Clear();
             string cognome = txt_autore.Text;
+            string nome = txt_nome.Text;
             XDocument xmlDoc = XDocument.Parse(File.ReadAllText(@"../../libri.XML", System.Text.Encoding.UTF8), LoadOptions.None);
 
             IEnumerable<string> names = from libri in XDocument.Load(@"../../libri.XML")
                                         .Elements("Biblioteca").Elements("wiride")
-                                        where (string)libri.Element("autore").Element("cognome") == cognome
+                                        where (string)libri.Element("autore").Element("cognome") == cognome && (string)libri.Element("autore").Element("nome") == nome
                                         select libri.Element("titolo").Value;
 
             foreach (string nomi in names)
@@ -96,27 +97,38 @@ namespace libreria
 
         private void btn_modifica_Click(object sender, RoutedEventArgs e)
         {
-            string titolo = txt_titolo2.Text;
-            string testo = txt_inputtesto.Text;
-            IEnumerable<XElement> Mod_Gen = from biblioteca in doc.Descendants("wiride")
-
-                                            where biblioteca.Element("titolo").Value == titolo
-
-                                            select biblioteca.Element("genere");
-            if (Mod_Gen.OfType<XElement>().First().Value == null)
+            if (txt_titolo2.Text != "" && txt_inputtesto.Text != "")
             {
-                doc.Element("Biblioteca")
-               .Elements("wiride")
-               .Where(x => x.Attribute("titolo").Value == titolo).First()
-               .AddBeforeSelf(
-               new XElement("genere", testo));
+                string titolo = txt_titolo2.Text;
+                string testo = txt_inputtesto.Text;
+                IEnumerable<XElement> Mod_Gen = from biblioteca in doc.Descendants("wiride")
+
+                                                where biblioteca.Element("titolo").Value == titolo
+
+                                                select biblioteca.Element("genere");
+                try
+                {
+                    if (Mod_Gen.OfType<XElement>().First().Value == null)
+                    {
+                        doc.Element("Biblioteca")
+                       .Elements("wiride")
+                       .Where(x => x.Attribute("titolo").Value == titolo).First()
+                       .AddBeforeSelf(
+                       new XElement("genere", testo));
+                    }
+                    else
+                    {
+                        Mod_Gen.OfType<XElement>().First().Value = testo;
+                    }
+
+                    doc.Save(@"../../libri.xml");
+                }catch (SystemException ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
             else
-            {
-                Mod_Gen.OfType<XElement>().First().Value = testo;
-            }
-
-            doc.Save(@"../../libri.xml");
+                MessageBox.Show("Inserisci i dati prima di procedere con l'operazione");
 
         }
     }
